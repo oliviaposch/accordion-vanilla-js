@@ -1,0 +1,177 @@
+/* ================================= */
+/*             mixins            */
+/* ================================= */
+//media Queries
+@mixin mq($break) {
+    $value: map-get($breakpoints, $break);
+    @media (min-width: $value) {
+        @content;
+    }
+}
+@mixin btnTransform {
+    transition-duration: 0.8s;
+    transition-property: transform;
+}
+@mixin webfont($url) {
+    src: url('#{$url}.eot'),
+    url('#{$url}.eot?#iefix') format('embedded-opentype'),
+    url('#{$url}.woff2') format('woff2'),
+    url('#{$url}.woff') format('woff'),
+    url('#{$url}.ttf') format('truetype');
+}
+
+/* ================================= */
+/*             variables             */
+/* ================================= */
+
+//Breackpoints
+$breakpoints: (
+    'xs': 575,
+    'sm': 576,
+    'md': 768px,
+    'lg': 992,  
+);
+
+//fonts
+@font-face {
+    font-family: 'Relato Sans regular';
+    @include webfont('fonts/RelatoSansOT-Regular');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Relato Sans semibold';
+    @include webfont('fonts/RelatoSansOT-SemiBold');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+.container{
+    width:80%;
+    margin: auto;
+    font-family: 'Relato Sans regular';
+    @include mq('md'){
+        width:60%;
+    }
+}
+
+h1,h2{
+    color: #393a4c;
+}
+h1{
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin: 3rem 0;
+    @include mq('md'){
+        font-size: 3rem;
+        margin: 5rem 0;
+    }
+}
+
+h2{
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    position: relative;
+    padding: 1.2rem 0 0.8rem;
+    margin: 0;
+    @include mq('md'){
+        padding: 1.6rem 0 1rem;
+        &::after{
+            top: 23px!important;
+        }
+    }
+    @include mq('lg'){
+        font-size: 2rem;
+        padding: .8rem 0 0.2rem;
+    }
+    &::after{
+        content: url(assets/svg/secondary-plus.svg);
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 0;
+        top: 15px;
+        @include btnTransform();
+    }
+}
+h3{
+    font-size: 1.2rem;
+    position: relative;
+    letter-spacing: 2px;
+    font-family: 'Relato Sans semibold';
+    padding: 1rem 0 0.2rem;
+    margin: 0;
+    color: #808080;
+    
+    &::after{
+        content: url(assets/svg/secondary-plus.svg);
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 0;
+        top: 13px;
+        @include btnTransform();
+    }
+}
+//accordion Element
+.ac{
+    border-top: 1px solid #b7b7b7;
+    &:last-of-type{
+        border-bottom: 1px solid #b7b7b7;
+    }
+    h2{
+        &::after{
+            transform: rotate(135deg);
+        }
+    }
+    //accordion Sub Element
+    .sub-ac{
+        transform: scaleY(1);
+        transform-origin: top;
+        transition: height 1s ease-out;
+        border-bottom: 1px solid #b7b7b7;
+        &:last-of-type{
+            border-bottom: 0;
+        }
+        &:first-of-type{
+            border-top: 1px solid #b7b7b7;
+        }
+        h3{
+            &::after{
+                transform: rotate(135deg);
+            }
+        }
+        &.closed{
+            .sub-ac-body{
+                height: 0;
+                transition:height 1s ease-out;
+                transform: scaleY(0);
+                
+            }
+            h3{
+                &::after{
+                    transform: rotate(0deg);
+                }
+            }
+        }
+        
+    }
+   
+    &.closed{
+       .sub-ac{
+            height: 0;
+            transition:height 1s ease-out;
+            transform: scaleY(0);
+       }
+       h2{
+            &::after{
+                transform: rotate(0deg);
+            }
+        }
+    }
+}
+
+
